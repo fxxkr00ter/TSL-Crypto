@@ -200,9 +200,38 @@ def _get_stock_stats_bulk(
     import os
     
     config = get_config()
-    online = config["data_vendors"]["technical_indicators"] != "local"
+    vendor = config["data_vendors"].get("technical_indicators", "local")
+    online = vendor != "local"
     
-    if not online:
+    if vendor == "binance":
+        try:
+            from .binance import get_binance_klines_df
+            today_date = pd.Timestamp.today()
+            curr_date_dt = pd.to_datetime(curr_date)
+            end_date = today_date
+            start_date = today_date - pd.DateOffset(years=5)
+            start_date_str = start_date.strftime("%Y-%m-%d")
+            end_date_str = end_date.strftime("%Y-%m-%d")
+
+            os.makedirs(config["data_cache_dir"], exist_ok=True)
+            data_file = os.path.join(
+                config["data_cache_dir"],
+                f"{symbol}-binance-data-{start_date_str}-{end_date_str}.csv",
+            )
+
+            if os.path.exists(data_file):
+                data = pd.read_csv(data_file)
+            else:
+                data = get_binance_klines_df(symbol, start_date_str, end_date_str)
+                if data.empty:
+                    raise Exception("Binance data not available for indicator calculation")
+                data.to_csv(data_file, index=False)
+
+            df = wrap(data)
+            df["Date"] = pd.to_datetime(df["Date"]).dt.strftime("%Y-%m-%d")
+        except Exception as exc:
+            raise Exception(f"Binance indicator data fetch failed: {exc}")
+    elif not online:
         # Local data path
         try:
             data = pd.read_csv(

@@ -1,19 +1,15 @@
 from typing import Annotated
 
 # Import from vendor-specific modules
-from .local import get_YFin_data, get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_simfin_balance_sheet, get_simfin_cashflow, get_simfin_income_statements, get_reddit_global_news, get_reddit_company_news
-from .y_finance import get_YFin_data_online, get_stock_stats_indicators_window, get_balance_sheet as get_yfinance_balance_sheet, get_cashflow as get_yfinance_cashflow, get_income_statement as get_yfinance_income_statement, get_insider_transactions as get_yfinance_insider_transactions
-from .google import get_google_news
-from .openai import get_stock_news_openai, get_global_news_openai, get_fundamentals_openai
+from .local import get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_reddit_global_news, get_reddit_company_news
+from .y_finance import get_stock_stats_indicators_window, get_insider_transactions as get_yfinance_insider_transactions
+from .binance import get_binance_crypto_data, get_binance_token_metrics
+from .google import get_google_news_range, get_global_news_google
+from .openai import get_stock_news_openai, get_global_news_openai, get_token_metrics_openai
 from .alpha_vantage import (
-    get_stock as get_alpha_vantage_stock,
     get_indicator as get_alpha_vantage_indicator,
-    get_fundamentals as get_alpha_vantage_fundamentals,
-    get_balance_sheet as get_alpha_vantage_balance_sheet,
-    get_cashflow as get_alpha_vantage_cashflow,
-    get_income_statement as get_alpha_vantage_income_statement,
     get_insider_transactions as get_alpha_vantage_insider_transactions,
-    get_news as get_alpha_vantage_news
+    get_news as get_alpha_vantage_news,
 )
 from .alpha_vantage_common import AlphaVantageRateLimitError
 
@@ -22,10 +18,10 @@ from .config import get_config
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
-    "core_stock_apis": {
-        "description": "OHLCV stock price data",
+    "core_crypto_apis": {
+        "description": "OHLCV crypto price data",
         "tools": [
-            "get_stock_data"
+            "get_crypto_data"
         ]
     },
     "technical_indicators": {
@@ -35,12 +31,9 @@ TOOLS_CATEGORIES = {
         ]
     },
     "fundamental_data": {
-        "description": "Company fundamentals",
+        "description": "Token metrics and crypto fundamentals",
         "tools": [
-            "get_fundamentals",
-            "get_balance_sheet",
-            "get_cashflow",
-            "get_income_statement"
+            "get_token_metrics"
         ]
     },
     "news_data": {
@@ -58,53 +51,40 @@ VENDOR_LIST = [
     "local",
     "yfinance",
     "openai",
-    "google"
+    "google",
+    "binance",
+    "alpha_vantage",
 ]
 
 # Mapping of methods to their vendor-specific implementations
 VENDOR_METHODS = {
-    # core_stock_apis
-    "get_stock_data": {
-        "alpha_vantage": get_alpha_vantage_stock,
-        "yfinance": get_YFin_data_online,
-        "local": get_YFin_data,
+    # core_crypto_apis
+    "get_crypto_data": {
+        "binance": get_binance_crypto_data,
     },
     # technical_indicators
     "get_indicators": {
         "alpha_vantage": get_alpha_vantage_indicator,
         "yfinance": get_stock_stats_indicators_window,
-        "local": get_stock_stats_indicators_window
+        "local": get_stock_stats_indicators_window,
+        "binance": get_stock_stats_indicators_window,
     },
     # fundamental_data
-    "get_fundamentals": {
-        "alpha_vantage": get_alpha_vantage_fundamentals,
-        "openai": get_fundamentals_openai,
-    },
-    "get_balance_sheet": {
-        "alpha_vantage": get_alpha_vantage_balance_sheet,
-        "yfinance": get_yfinance_balance_sheet,
-        "local": get_simfin_balance_sheet,
-    },
-    "get_cashflow": {
-        "alpha_vantage": get_alpha_vantage_cashflow,
-        "yfinance": get_yfinance_cashflow,
-        "local": get_simfin_cashflow,
-    },
-    "get_income_statement": {
-        "alpha_vantage": get_alpha_vantage_income_statement,
-        "yfinance": get_yfinance_income_statement,
-        "local": get_simfin_income_statements,
+    "get_token_metrics": {
+        "binance": get_binance_token_metrics,
+        "openai": get_token_metrics_openai,
     },
     # news_data
     "get_news": {
         "alpha_vantage": get_alpha_vantage_news,
         "openai": get_stock_news_openai,
-        "google": get_google_news,
-        "local": [get_finnhub_news, get_reddit_company_news, get_google_news],
+        "google": get_google_news_range,
+        "local": [get_finnhub_news, get_reddit_company_news, get_google_news_range],
     },
     "get_global_news": {
         "openai": get_global_news_openai,
-        "local": get_reddit_global_news
+        "google": get_global_news_google,
+        "local": get_reddit_global_news,
     },
     "get_insider_sentiment": {
         "local": get_finnhub_company_insider_sentiment
