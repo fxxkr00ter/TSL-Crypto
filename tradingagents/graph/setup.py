@@ -1,4 +1,4 @@
-# TradingAgents/graph/setup.py
+# TSL-Crypto/graph/setup.py
 
 from typing import Dict, Any
 from langchain_openai import ChatOpenAI

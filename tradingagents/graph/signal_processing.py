@@ -1,4 +1,4 @@
-# TradingAgents/graph/signal_processing.py
+# TSL-Crypto/graph/signal_processing.py
 
 from langchain_openai import ChatOpenAI
 

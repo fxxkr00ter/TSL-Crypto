@@ -1,4 +1,4 @@
-# TradingAgents/graph/trading_graph.py
+# TSL-Crypto/graph/trading_graph.py
 
 import os
 from pathlib import Path
@@ -24,16 +24,11 @@ from tradingagents.dataflows.config import set_config
 
 # Import the new abstract tool methods from agent_utils
 from tradingagents.agents.utils.agent_utils import (
-    get_stock_data,
+    get_crypto_data,
     get_indicators,
-    get_fundamentals,
-    get_balance_sheet,
-    get_cashflow,
-    get_income_statement,
+    get_token_metrics,
     get_news,
-    get_insider_sentiment,
-    get_insider_transactions,
-    get_global_news
+    get_global_news,
 )
 
 from .conditional_logic import ConditionalLogic
@@ -72,9 +67,27 @@ class TradingAgentsGraph:
         )
 
         # Initialize LLMs
-        if self.config["llm_provider"].lower() == "openai" or self.config["llm_provider"] == "ollama" or self.config["llm_provider"] == "openrouter":
-            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+        if self.config["llm_provider"].lower() in {"openai", "ollama", "openrouter"}:
+            self.deep_thinking_llm = ChatOpenAI(
+                model=self.config["deep_think_llm"],
+                base_url=self.config["backend_url"],
+            )
+            self.quick_thinking_llm = ChatOpenAI(
+                model=self.config["quick_think_llm"],
+                base_url=self.config["backend_url"],
+            )
+        elif self.config["llm_provider"].lower() == "xai":
+            xai_key = os.getenv("XAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+            self.deep_thinking_llm = ChatOpenAI(
+                model=self.config["deep_think_llm"],
+                base_url=self.config["backend_url"],
+                api_key=xai_key,
+            )
+            self.quick_thinking_llm = ChatOpenAI(
+                model=self.config["quick_think_llm"],
+                base_url=self.config["backend_url"],
+                api_key=xai_key,
+            )
         elif self.config["llm_provider"].lower() == "anthropic":
             self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
             self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
@@ -125,8 +138,8 @@ class TradingAgentsGraph:
         return {
             "market": ToolNode(
                 [
-                    # Core stock data tools
-                    get_stock_data,
+                    # Core crypto data tools
+                    get_crypto_data,
                     # Technical indicators
                     get_indicators,
                 ]
@@ -142,23 +155,18 @@ class TradingAgentsGraph:
                     # News and insider information
                     get_news,
                     get_global_news,
-                    get_insider_sentiment,
-                    get_insider_transactions,
                 ]
             ),
             "fundamentals": ToolNode(
                 [
-                    # Fundamental analysis tools
-                    get_fundamentals,
-                    get_balance_sheet,
-                    get_cashflow,
-                    get_income_statement,
+                    # Token metrics tools
+                    get_token_metrics,
                 ]
             ),
         }
 
     def propagate(self, company_name, trade_date):
-        """Run the trading agents graph for a company on a specific date."""
+        """Run the trading agents graph for a crypto symbol on a specific date."""
 
         self.ticker = company_name
 
@@ -225,11 +233,11 @@ class TradingAgentsGraph:
         }
 
         # Save to file
-        directory = Path(f"eval_results/{self.ticker}/TradingAgentsStrategy_logs/")
+        directory = Path(f"eval_results/{self.ticker}/TSLCrypto_strategy_logs/")
         directory.mkdir(parents=True, exist_ok=True)
 
         with open(
-            f"eval_results/{self.ticker}/TradingAgentsStrategy_logs/full_states_log_{trade_date}.json",
+            f"eval_results/{self.ticker}/TSLCrypto_strategy_logs/full_states_log_{trade_date}.json",
             "w",
         ) as f:
             json.dump(self.log_states_dict, f, indent=4)
