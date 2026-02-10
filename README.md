@@ -1,225 +1,358 @@
+<h1 align="center">TSL-Crypto</h1>
+
 <p align="center">
-  <img src="assets/TauricResearch.png" style="width: 60%; height: auto;">
+  <strong>基于多智能体 LLM 的加密货币交易分析框架</strong>
 </p>
 
-<div align="center" style="line-height: 1;">
-  <a href="https://arxiv.org/abs/2412.20138" target="_blank"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2412.20138-B31B1B?logo=arxiv"/></a>
-  <a href="https://discord.com/invite/hk9PGKShPK" target="_blank"><img alt="Discord" src="https://img.shields.io/badge/Discord-TradingResearch-7289da?logo=discord&logoColor=white&color=7289da"/></a>
-  <a href="./assets/wechat.png" target="_blank"><img alt="WeChat" src="https://img.shields.io/badge/WeChat-TauricResearch-brightgreen?logo=wechat&logoColor=white"/></a>
-  <a href="https://x.com/TauricResearch" target="_blank"><img alt="X Follow" src="https://img.shields.io/badge/X-TauricResearch-white?logo=x&logoColor=white"/></a>
-  <br>
-  <a href="https://github.com/TauricResearch/" target="_blank"><img alt="Community" src="https://img.shields.io/badge/Join_GitHub_Community-TauricResearch-14C290?logo=discourse"/></a>
-</div>
+<p align="center">
+  <a href="#快速开始">快速开始</a> &nbsp;|&nbsp;
+  <a href="#系统架构">系统架构</a> &nbsp;|&nbsp;
+  <a href="#智能体角色">智能体角色</a> &nbsp;|&nbsp;
+  <a href="#配置说明">配置说明</a> &nbsp;|&nbsp;
+  <a href="#支持的-llm-提供商">LLM 提供商</a>
+</p>
 
-<div align="center">
-  <!-- Keep these links. Translations will automatically update with the README. -->
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=de">Deutsch</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=es">Español</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=fr">français</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=ja">日本語</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=ko">한국어</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=pt">Português</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=ru">Русский</a> | 
-  <a href="https://www.readme-i18n.com/TauricResearch/TradingAgents?lang=zh">中文</a>
-</div>
+<p align="center">
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-blue?logo=python&logoColor=white">
+  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="LangGraph" src="https://img.shields.io/badge/LangGraph-powered-orange">
+  <img alt="xAI Grok" src="https://img.shields.io/badge/xAI-Grok-black">
+  <img alt="Binance" src="https://img.shields.io/badge/Binance-data-F0B90B?logo=binance&logoColor=white">
+</p>
 
 ---
 
-# TradingAgents: Multi-Agents LLM Financial Trading Framework 
+**TSL-Crypto**（Trading Signal Lights）是一个开源的多智能体框架，模拟专业加密货币交易机构的运作方式。它部署了多个 LLM 驱动的专业智能体 —— 技术分析师、情绪分析师、新闻研究员、代币指标分析师、多空研究员、交易员以及风控管理团队 —— 通过结构化辩论与协作分析，最终生成 **BUY（买入）/ HOLD（持有）/ SELL（卖出）** 信号。
 
-> 🎉 **TradingAgents** officially released! We have received numerous inquiries about the work, and we would like to express our thanks for the enthusiasm in our community.
->
-> So we decided to fully open-source the framework. Looking forward to building impactful projects with you!
+基于 **LangGraph** 进行智能体编排，**xAI Grok** 提供推理能力，**Binance** 提供实时市场数据。
 
-<div align="center">
-<a href="https://www.star-history.com/#TauricResearch/TradingAgents&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=TauricResearch/TradingAgents&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=TauricResearch/TradingAgents&type=Date" />
-   <img alt="TradingAgents Star History" src="https://api.star-history.com/svg?repos=TauricResearch/TradingAgents&type=Date" style="width: 80%; height: auto;" />
- </picture>
-</a>
-</div>
+> **免责声明**：本框架仅用于**研究和教育目的**。交易表现因人而异，不构成任何金融、投资或交易建议。
 
-<div align="center">
+---
 
-🚀 [TradingAgents](#tradingagents-framework) | ⚡ [Installation & CLI](#installation-and-cli) | 🎬 [Demo](https://www.youtube.com/watch?v=90gr5lwjIho) | 📦 [Package Usage](#tradingagents-package) | 🤝 [Contributing](#contributing) | 📄 [Citation](#citation)
+## 快速开始
 
-</div>
-
-## TradingAgents Framework
-
-TradingAgents is a multi-agent trading framework that mirrors the dynamics of real-world trading firms. By deploying specialized LLM-powered agents: from fundamental analysts, sentiment experts, and technical analysts, to trader, risk management team, the platform collaboratively evaluates market conditions and informs trading decisions. Moreover, these agents engage in dynamic discussions to pinpoint the optimal strategy.
-
-<p align="center">
-  <img src="assets/schema.png" style="width: 100%; height: auto;">
-</p>
-
-> TradingAgents framework is designed for research purposes. Trading performance may vary based on many factors, including the chosen backbone language models, model temperature, trading periods, the quality of data, and other non-deterministic factors. [It is not intended as financial, investment, or trading advice.](https://tauric.ai/disclaimer/)
-
-Our framework decomposes complex trading tasks into specialized roles. This ensures the system achieves a robust, scalable approach to market analysis and decision-making.
-
-### Analyst Team
-- Fundamentals Analyst: Evaluates company financials and performance metrics, identifying intrinsic values and potential red flags.
-- Sentiment Analyst: Analyzes social media and public sentiment using sentiment scoring algorithms to gauge short-term market mood.
-- News Analyst: Monitors global news and macroeconomic indicators, interpreting the impact of events on market conditions.
-- Technical Analyst: Utilizes technical indicators (like MACD and RSI) to detect trading patterns and forecast price movements.
-
-<p align="center">
-  <img src="assets/analyst.png" width="100%" style="display: inline-block; margin: 0 2%;">
-</p>
-
-### Researcher Team
-- Comprises both bullish and bearish researchers who critically assess the insights provided by the Analyst Team. Through structured debates, they balance potential gains against inherent risks.
-
-<p align="center">
-  <img src="assets/researcher.png" width="70%" style="display: inline-block; margin: 0 2%;">
-</p>
-
-### Trader Agent
-- Composes reports from the analysts and researchers to make informed trading decisions. It determines the timing and magnitude of trades based on comprehensive market insights.
-
-<p align="center">
-  <img src="assets/trader.png" width="70%" style="display: inline-block; margin: 0 2%;">
-</p>
-
-### Risk Management and Portfolio Manager
-- Continuously evaluates portfolio risk by assessing market volatility, liquidity, and other risk factors. The risk management team evaluates and adjusts trading strategies, providing assessment reports to the Portfolio Manager for final decision.
-- The Portfolio Manager approves/rejects the transaction proposal. If approved, the order will be sent to the simulated exchange and executed.
-
-<p align="center">
-  <img src="assets/risk.png" width="70%" style="display: inline-block; margin: 0 2%;">
-</p>
-
-## Installation and CLI
-
-### Installation
-
-Clone TradingAgents:
 ```bash
-git clone https://github.com/TauricResearch/TradingAgents.git
-cd TradingAgents
-```
+# 1. 克隆仓库
+git clone https://github.com/fxxkr00ter/TSL-Crypto.git
+cd TSL-Crypto
 
-Create a virtual environment in any of your favorite environment managers:
-```bash
-conda create -n tradingagents python=3.13
-conda activate tradingagents
-```
+# 2. 创建虚拟环境
+python3 -m venv .venv
+source .venv/bin/activate
 
-Install dependencies:
-```bash
+# 3. 安装依赖
 pip install -r requirements.txt
-```
 
-### Required APIs
-
-You will need the OpenAI API for all the agents, and [Alpha Vantage API](https://www.alphavantage.co/support/#api-key) for fundamental and news data (default configuration).
-
-```bash
-export OPENAI_API_KEY=$YOUR_OPENAI_API_KEY
-export ALPHA_VANTAGE_API_KEY=$YOUR_ALPHA_VANTAGE_API_KEY
-```
-
-Alternatively, you can create a `.env` file in the project root with your API keys (see `.env.example` for reference):
-```bash
+# 4. 配置 API 密钥
 cp .env.example .env
-# Edit .env with your actual API keys
+# 编辑 .env 文件，填入你的 XAI_API_KEY、BINANCE_API_KEY、BINANCE_SECRET_KEY
+
+# 5. 启动交互式 CLI
+python -m cli.main
 ```
 
-**Note:** We are happy to partner with Alpha Vantage to provide robust API support for TradingAgents. You can get a free AlphaVantage API [here](https://www.alphavantage.co/support/#api-key), TradingAgents-sourced requests also have increased rate limits to 60 requests per minute with no daily limits. Typically the quota is sufficient for performing complex tasks with TradingAgents thanks to Alpha Vantage’s open-source support program. If you prefer to use OpenAI for these data sources instead, you can modify the data vendor settings in `tradingagents/default_config.py`.
+<details>
+<summary><strong>API 密钥说明</strong></summary>
 
-### CLI Usage
+| 密钥 | 是否必需 | 说明 |
+|------|---------|------|
+| `XAI_API_KEY` | **必需** | xAI API 密钥，用于调用 Grok 模型 |
+| `BINANCE_API_KEY` | **必需** | 币安 API 密钥 |
+| `BINANCE_SECRET_KEY` | **必需** | 币安 API 私钥 |
+| `OPENAI_API_KEY` | 可选 | 用于新闻搜索和 Embeddings 的备选方案 |
+| `ALPHA_VANTAGE_API_KEY` | 可选 | 备选新闻与指标数据源 |
 
-You can also try out the CLI directly by running:
+</details>
+
+---
+
+## 系统架构
+
+```
+                        ┌─────────────────────────────────┐
+                        │          分析师团队               │
+                        │  市场 ─ 情绪 ─ 新闻 ─ 代币指标    │
+                        └──────────────┬──────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────┐
+                        │          研究辩论                 │
+                        │      多头  ◄──►  空头             │
+                        │         (N 轮辩论)               │
+                        └──────────────┬──────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────┐
+                        │         研究经理                  │
+                        │   (深度思考 LLM 裁判)             │
+                        └──────────────┬──────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────┐
+                        │          交易员                   │
+                        │     (生成交易计划)                 │
+                        └──────────────┬──────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────┐
+                        │        风控管理辩论                │
+                        │   激进型 ─ 保守型 ─ 中性型         │
+                        │         (N 轮辩论)               │
+                        └──────────────┬──────────────────┘
+                                       │
+                        ┌──────────────▼──────────────────┐
+                        │     风控裁判 / 投资组合经理         │
+                        │  (最终 BUY / HOLD / SELL 决策)    │
+                        └─────────────────────────────────┘
+```
+
+---
+
+## 智能体角色
+
+### 分析师团队（数据采集与报告生成）
+
+| 智能体 | 职责说明 | 数据来源 |
+|--------|---------|---------|
+| **市场分析师** | 技术分析：自主选择最多 8 种指标（SMA、EMA、MACD、RSI、布林带、ATR、VWMA、MFI），生成详细趋势报告 | Binance OHLCV + stockstats |
+| **情绪分析师** | 社交媒体与社区情绪分析 | Google News |
+| **新闻分析师** | 宏观经济与加密市场新闻分析 | Google News |
+| **代币指标分析师** | 交易所级别基本面：成交量、流动性、价格变化、交易笔数 | Binance 24h Ticker |
+
+### 研究团队（结构化辩论）
+
+| 智能体 | 职责说明 |
+|--------|---------|
+| **多头研究员** | 构建基于证据的看涨论点；反驳空头观点 |
+| **空头研究员** | 构建基于证据的看跌论点；反驳多头观点 |
+| **研究经理** | 裁判辩论结果；生成投资计划（使用深度思考 LLM） |
+
+### 交易团队
+
+| 智能体 | 职责说明 |
+|--------|---------|
+| **交易员** | 综合研究成果，生成包含 BUY/HOLD/SELL 建议的交易计划 |
+
+### 风控管理团队（结构化辩论）
+
+| 智能体 | 职责说明 |
+|--------|---------|
+| **激进型分析师** | 主张更高风险、更高收益的策略 |
+| **保守型分析师** | 主张资本保全、低风险的策略 |
+| **中性型分析师** | 在风险与收益之间寻求平衡 |
+| **风控裁判** | 最终决策者；输出最终的 BUY/HOLD/SELL 信号（使用深度思考 LLM） |
+
+### 记忆系统
+
+所有研究员、交易员和管理者均使用 **ChromaDB 向量记忆** 存储和回忆过去的市场情境与经验教训，实现跨会话的持续学习与改进。
+
+---
+
+## 执行流程
+
+1. **分析师阶段** — 分析师按顺序运行，每个分析师具备工具调用能力（由 LLM 自主决定调用哪些工具）。分析结果存入共享的 `AgentState`。
+2. **研究辩论** — 多头研究员与空头研究员进行 `max_debate_rounds` 轮辩论。
+3. **研究经理** — 深度思考 LLM 裁判辩论结果，生成投资计划。
+4. **交易员** — 基于所有报告和投资计划，生成交易方案。
+5. **风控辩论** — 激进型、保守型、中性型分析师进行 `max_risk_discuss_rounds` 轮辩论。
+6. **风控裁判** — 深度思考 LLM 做出最终 BUY/HOLD/SELL 决策。
+
+---
+
+## 技术栈
+
+| 组件 | 技术方案 |
+|------|---------|
+| 智能体编排 | [LangGraph](https://github.com/langchain-ai/langgraph)（StateGraph、ToolNode、条件边） |
+| LLM 提供商（默认） | [xAI Grok](https://docs.x.ai)（`grok-4-fast-reasoning`、`grok-4-fast-non-reasoning`） |
+| LLM 备选方案 | OpenAI、Anthropic、Google Gemini、OpenRouter、Ollama |
+| 市场数据 | [Binance API](https://binance-docs.github.io/apidocs/)（python-binance） |
+| 技术指标 | [stockstats](https://github.com/jealous/stockstats) |
+| 新闻数据 | Google News、OpenAI Web Search、Alpha Vantage |
+| 智能体记忆 | [ChromaDB](https://www.trychroma.com/) + OpenAI Embeddings |
+| 命令行界面 | [Typer](https://typer.tiangolo.com/) + [Rich](https://rich.readthedocs.io/) + [Questionary](https://questionary.readthedocs.io/) |
+
+---
+
+## 使用方法
+
+### 命令行交互模式
+
 ```bash
 python -m cli.main
 ```
-You will see a screen where you can select your desired tickers, date, LLMs, research depth, etc.
 
-<p align="center">
-  <img src="assets/cli/cli_init.png" width="100%" style="display: inline-block; margin: 0 2%;">
-</p>
+CLI 将引导你完成以下步骤：
+1. 输入加密货币交易对（如 `BTCUSDT`）
+2. 选择分析日期
+3. 选择启用的分析师团队
+4. 选择研究深度（1 / 3 / 5 轮辩论）
+5. 选择 LLM 提供商和模型
 
-An interface will appear showing results as they load, letting you track the agent's progress as it runs.
+Rich 实时仪表板将展示所有智能体的运行进度。
 
-<p align="center">
-  <img src="assets/cli/cli_news.png" width="100%" style="display: inline-block; margin: 0 2%;">
-</p>
 
-<p align="center">
-  <img src="assets/cli/cli_transaction.png" width="100%" style="display: inline-block; margin: 0 2%;">
-</p>
-
-## TradingAgents Package
-
-### Implementation Details
-
-We built TradingAgents with LangGraph to ensure flexibility and modularity. We utilize `o1-preview` and `gpt-4o` as our deep thinking and fast thinking LLMs for our experiments. However, for testing purposes, we recommend you use `o4-mini` and `gpt-4.1-mini` to save on costs as our framework makes **lots of** API calls.
-
-### Python Usage
-
-To use TradingAgents inside your code, you can import the `tradingagents` module and initialize a `TradingAgentsGraph()` object. The `.propagate()` function will return a decision. You can run `main.py`, here's also a quick example:
+### Python 编程调用
 
 ```python
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
+from dotenv import load_dotenv
 
-ta = TradingAgentsGraph(debug=True, config=DEFAULT_CONFIG.copy())
+load_dotenv()
 
-# forward propagate
-_, decision = ta.propagate("NVDA", "2024-05-10")
-print(decision)
-```
-
-You can also adjust the default configuration to set your own choice of LLMs, debate rounds, etc.
-
-```python
-from tradingagents.graph.trading_graph import TradingAgentsGraph
-from tradingagents.default_config import DEFAULT_CONFIG
-
-# Create a custom config
 config = DEFAULT_CONFIG.copy()
-config["deep_think_llm"] = "gpt-4.1-nano"  # Use a different model
-config["quick_think_llm"] = "gpt-4.1-nano"  # Use a different model
-config["max_debate_rounds"] = 1  # Increase debate rounds
-
-# Configure data vendors (default uses yfinance and Alpha Vantage)
-config["data_vendors"] = {
-    "core_stock_apis": "yfinance",           # Options: yfinance, alpha_vantage, local
-    "technical_indicators": "yfinance",      # Options: yfinance, alpha_vantage, local
-    "fundamental_data": "alpha_vantage",     # Options: openai, alpha_vantage, local
-    "news_data": "alpha_vantage",            # Options: openai, alpha_vantage, google, local
-}
-
-# Initialize with custom config
 ta = TradingAgentsGraph(debug=True, config=config)
 
-# forward propagate
-_, decision = ta.propagate("NVDA", "2024-05-10")
-print(decision)
+# 分析 BTC/USDT
+final_state, decision = ta.propagate("BTCUSDT", "2026-02-07")
+print(decision)  # BUY、HOLD 或 SELL
+
+# 访问各智能体的独立报告
+print(final_state["market_report"])          # 市场分析报告
+print(final_state["sentiment_report"])       # 情绪分析报告
+print(final_state["news_report"])            # 新闻分析报告
+print(final_state["fundamentals_report"])    # 代币指标报告
+print(final_state["investment_plan"])        # 投资计划
+print(final_state["trader_investment_plan"]) # 交易计划
+print(final_state["final_trade_decision"])   # 最终交易决策
 ```
 
-> The default configuration uses yfinance for stock price and technical data, and Alpha Vantage for fundamental and news data. For production use or if you encounter rate limits, consider upgrading to [Alpha Vantage Premium](https://www.alphavantage.co/premium/) for more stable and reliable data access. For offline experimentation, there's a local data vendor option that uses our **Tauric TradingDB**, a curated dataset for backtesting, though this is still in development. We're currently refining this dataset and plan to release it soon alongside our upcoming projects. Stay tuned!
+### 复盘学习（可选）
 
-You can view the full list of configurations in `tradingagents/default_config.py`.
+在观察到实际收益/亏损后，可将结果反馈至系统以更新智能体记忆：
 
-## Contributing
-
-We welcome contributions from the community! Whether it's fixing a bug, improving documentation, or suggesting a new feature, your input helps make this project better. If you are interested in this line of research, please consider joining our open-source financial AI research community [Tauric Research](https://tauric.ai/).
-
-## Citation
-
-Please reference our work if you find *TradingAgents* provides you with some help :)
-
+```python
+ta.reflect_and_remember(returns_losses=1000)
 ```
-@misc{xiao2025tradingagentsmultiagentsllmfinancial,
-      title={TradingAgents: Multi-Agents LLM Financial Trading Framework}, 
-      author={Yijia Xiao and Edward Sun and Di Luo and Wei Wang},
-      year={2025},
-      eprint={2412.20138},
-      archivePrefix={arXiv},
-      primaryClass={q-fin.TR},
-      url={https://arxiv.org/abs/2412.20138}, 
+
+---
+
+## 配置说明
+
+所有默认配置位于 `tradingagents/default_config.py`：
+
+```python
+DEFAULT_CONFIG = {
+    # LLM 设置
+    "llm_provider": "xai",
+    "deep_think_llm": "grok-4-fast-reasoning",
+    "quick_think_llm": "grok-4-fast-non-reasoning",
+    "backend_url": "https://api.x.ai/v1",
+
+    # 辩论轮次
+    "max_debate_rounds": 1,        # 多空研究辩论轮次
+    "max_risk_discuss_rounds": 1,  # 风控团队辩论轮次
+
+    # 数据供应商
+    "data_vendors": {
+        "core_crypto_apis": "binance",       # 核心加密货币数据
+        "technical_indicators": "binance",   # 技术指标数据
+        "fundamental_data": "binance",       # 基本面数据
+        "news_data": "google",               # 新闻数据
+    },
 }
 ```
+
+可在运行时覆盖任意配置项：
+
+```python
+config = DEFAULT_CONFIG.copy()
+config["max_debate_rounds"] = 3                    # 增加辩论轮次
+config["data_vendors"]["news_data"] = "openai"     # 切换新闻源
+config["llm_provider"] = "openai"                  # 切换为 OpenAI
+config["deep_think_llm"] = "o4-mini"
+config["quick_think_llm"] = "gpt-4o-mini"
+```
+
+---
+
+## 项目结构
+
+```
+TSL-Crypto/
+├── main.py                          # 程序入口示例
+├── cli/
+│   ├── main.py                      # CLI 应用（Typer + Rich）
+│   ├── models.py                    # AnalystType 枚举
+│   ├── utils.py                     # 用户输入辅助函数
+│   └── static/welcome.txt           # ASCII 欢迎界面
+├── tradingagents/
+│   ├── default_config.py            # 默认配置
+│   ├── agents/
+│   │   ├── analysts/
+│   │   │   ├── market_analyst.py    # 市场技术分析师
+│   │   │   ├── fundamentals_analyst.py  # 代币指标分析师
+│   │   │   ├── news_analyst.py      # 新闻分析师
+│   │   │   └── social_media_analyst.py  # 情绪分析师
+│   │   ├── researchers/
+│   │   │   ├── bull_researcher.py   # 多头研究员
+│   │   │   └── bear_researcher.py   # 空头研究员
+│   │   ├── trader/
+│   │   │   └── trader.py            # 交易员
+│   │   ├── risk_mgmt/
+│   │   │   ├── aggresive_debator.py # 激进型风控分析师
+│   │   │   ├── conservative_debator.py  # 保守型风控分析师
+│   │   │   └── neutral_debator.py   # 中性型风控分析师
+│   │   ├── managers/
+│   │   │   ├── research_manager.py  # 研究经理（辩论裁判）
+│   │   │   └── risk_manager.py      # 风控裁判（最终决策）
+│   │   └── utils/
+│   │       ├── agent_states.py      # 状态定义（AgentState 等）
+│   │       ├── agent_utils.py       # 工具导入与工具函数
+│   │       ├── core_stock_tools.py  # get_crypto_data 工具
+│   │       ├── technical_indicators_tools.py  # get_indicators 工具
+│   │       ├── fundamental_data_tools.py      # get_token_metrics 工具
+│   │       ├── news_data_tools.py   # get_news、get_global_news 工具
+│   │       └── memory.py            # ChromaDB 向量记忆
+│   ├── graph/
+│   │   ├── trading_graph.py         # 主编排器
+│   │   ├── setup.py                 # LangGraph 图构建
+│   │   ├── propagation.py           # 状态初始化与传播
+│   │   ├── conditional_logic.py     # 流程控制（条件路由）
+│   │   ├── signal_processing.py     # BUY/SELL/HOLD 信号提取
+│   │   └── reflection.py            # 交易后复盘学习
+│   └── dataflows/
+│       ├── interface.py             # 数据供应商路由（核心）
+│       ├── config.py                # 运行时配置
+│       ├── binance.py               # Binance OHLCV 与代币指标
+│       ├── google.py                # Google News 新闻数据
+│       ├── openai.py                # OpenAI Web Search
+│       ├── y_finance.py             # yfinance / stockstats 技术指标
+│       ├── alpha_vantage*.py        # Alpha Vantage 系列 API
+│       └── local.py                 # Finnhub、Reddit、本地数据
+├── reports/                         # 生成的分析报告
+├── requirements.txt                 # Python 依赖
+├── pyproject.toml                   # 项目元数据
+├── setup.py                         # 包安装配置
+├── .env.example                     # 环境变量模板
+└── LICENSE                          # MIT 开源协议
+```
+
+---
+
+## 支持的 LLM 提供商
+
+| 提供商 | 配置值 | 模型示例 |
+|--------|-------|---------|
+| xAI | `"xai"` | `grok-4-fast-reasoning`、`grok-4-fast-non-reasoning` |
+| OpenAI | `"openai"` | `gpt-4o`、`gpt-4o-mini`、`o4-mini` |
+| Anthropic | `"anthropic"` | `claude-sonnet-4-0`、`claude-3-5-haiku-latest` |
+| Google | `"google"` | `gemini-2.5-flash-preview-05-20` |
+| OpenRouter | `"openrouter"` | `meta-llama/llama-4-scout:free` |
+| Ollama | `"ollama"` | `llama3.1`、`qwen3` |
+
+---
+
+## 参与贡献
+
+欢迎任何形式的贡献！无论是修复 Bug、改进文档、添加新的数据源，还是提出功能建议 —— 请随时提交 Issue 或 Pull Request。
+
+1. Fork 本仓库
+2. 创建功能分支（`git checkout -b feature/your-feature`）
+3. 提交更改（`git commit -m 'Add some feature'`）
+4. 推送到分支（`git push origin feature/your-feature`）
+5. 创建 Pull Request
+
+---
+
+## 开源协议
+
+本项目基于 [MIT 协议](LICENSE) 开源。
