@@ -4,16 +4,16 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 @tool
 def get_indicators(
-    symbol: Annotated[str, "ticker symbol of the company"],
+    symbol: Annotated[str, "crypto symbol (e.g., BTCUSDT, ETHUSDT)"],
     indicator: Annotated[str, "technical indicator to get the analysis and report of"],
     curr_date: Annotated[str, "The current trading date you are trading on, YYYY-mm-dd"],
     look_back_days: Annotated[int, "how many days to look back"] = 30,
 ) -> str:
     """
-    Retrieve technical indicators for a given ticker symbol.
+    Retrieve technical indicators for a given crypto symbol.
     Uses the configured technical_indicators vendor.
     Args:
-        symbol (str): Ticker symbol of the company, e.g. AAPL, TSM
+        symbol (str): Crypto symbol, e.g. BTCUSDT, ETHUSDT
         indicator (str): Technical indicator to get the analysis and report of
         curr_date (str): The current trading date you are trading on, YYYY-mm-dd
         look_back_days (int): How many days to look back, default is 30

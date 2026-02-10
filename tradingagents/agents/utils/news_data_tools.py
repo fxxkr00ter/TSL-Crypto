@@ -4,15 +4,15 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 @tool
 def get_news(
-    ticker: Annotated[str, "Ticker symbol"],
+    ticker: Annotated[str, "Crypto symbol"],
     start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
     end_date: Annotated[str, "End date in yyyy-mm-dd format"],
 ) -> str:
     """
-    Retrieve news data for a given ticker symbol.
+    Retrieve news data for a given crypto symbol.
     Uses the configured news_data vendor.
     Args:
-        ticker (str): Ticker symbol
+        ticker (str): Crypto symbol
         start_date (str): Start date in yyyy-mm-dd format
         end_date (str): End date in yyyy-mm-dd format
     Returns:

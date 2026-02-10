@@ -1,6 +1,12 @@
-import chromadb
-from chromadb.config import Settings
+import os
 from openai import OpenAI
+
+try:
+    import chromadb
+    from chromadb.config import Settings
+except Exception:
+    chromadb = None
+    Settings = None
 
 
 class FinancialSituationMemory:
@@ -9,9 +15,14 @@ class FinancialSituationMemory:
             self.embedding = "nomic-embed-text"
         else:
             self.embedding = "text-embedding-3-small"
-        self.client = OpenAI(base_url=config["backend_url"])
-        self.chroma_client = chromadb.Client(Settings(allow_reset=True))
-        self.situation_collection = self.chroma_client.create_collection(name=name)
+        api_key = os.getenv("XAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+        self.client = OpenAI(base_url=config["backend_url"], api_key=api_key)
+        self._fallback_store = []
+        if chromadb is None or Settings is None:
+            self.situation_collection = None
+        else:
+            self.chroma_client = chromadb.Client(Settings(allow_reset=True))
+            self.situation_collection = self.chroma_client.create_collection(name=name)
 
     def get_embedding(self, text):
         """Get OpenAI embedding for a text"""
@@ -23,6 +34,10 @@ class FinancialSituationMemory:
 
     def add_situations(self, situations_and_advice):
         """Add financial situations and their corresponding advice. Parameter is a list of tuples (situation, rec)"""
+
+        if self.situation_collection is None:
+            self._fallback_store.extend(situations_and_advice)
+            return
 
         situations = []
         advice = []
@@ -46,6 +61,8 @@ class FinancialSituationMemory:
 
     def get_memories(self, current_situation, n_matches=1):
         """Find matching recommendations using OpenAI embeddings"""
+        if self.situation_collection is None:
+            return []
         query_embedding = self.get_embedding(current_situation)
 
         results = self.situation_collection.query(
