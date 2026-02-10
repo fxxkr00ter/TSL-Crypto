@@ -1,3 +1,11 @@
+"""
+TSL-Crypto — Quick Start Example
+
+Usage:
+    1. Copy .env.example to .env and fill in your API keys.
+    2. Run: python main.py
+"""
+
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
@@ -6,26 +14,42 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Create a custom config
+# ── Create a custom config (optional) ────────────────────────────────────────
 config = DEFAULT_CONFIG.copy()
-config["deep_think_llm"] = "gpt-4o-mini"  # Use a different model
-config["quick_think_llm"] = "gpt-4o-mini"  # Use a different model
-config["max_debate_rounds"] = 1  # Increase debate rounds
 
-# Configure data vendors (default uses yfinance and alpha_vantage)
-config["data_vendors"] = {
-    "core_stock_apis": "yfinance",           # Options: yfinance, alpha_vantage, local
-    "technical_indicators": "yfinance",      # Options: yfinance, alpha_vantage, local
-    "fundamental_data": "alpha_vantage",     # Options: openai, alpha_vantage, local
-    "news_data": "alpha_vantage",            # Options: openai, alpha_vantage, google, local
-}
+# LLM settings (defaults to xAI Grok — change as needed)
+# config["llm_provider"] = "xai"
+# config["deep_think_llm"] = "grok-4-fast-reasoning"
+# config["quick_think_llm"] = "grok-4-fast-non-reasoning"
 
-# Initialize with custom config
+# Debate rounds
+# config["max_debate_rounds"] = 1        # Bull vs Bear debate rounds
+# config["max_risk_discuss_rounds"] = 1  # Risk management debate rounds
+
+# Data vendors
+# config["data_vendors"] = {
+#     "core_crypto_apis": "binance",        # Options: binance
+#     "technical_indicators": "binance",    # Options: binance, alpha_vantage, local
+#     "fundamental_data": "binance",        # Options: binance, openai
+#     "news_data": "google",               # Options: openai, alpha_vantage, google, local
+# }
+
+# ── Initialize and run ───────────────────────────────────────────────────────
 ta = TradingAgentsGraph(debug=True, config=config)
 
-# forward propagate
-_, decision = ta.propagate("NVDA", "2024-05-10")
-print(decision)
+# Analyze BTC/USDT for a given date
+final_state, decision = ta.propagate("BTCUSDT", "2026-02-07")
+print(f"\nFinal Decision: {decision}")
 
-# Memorize mistakes and reflect
-# ta.reflect_and_remember(1000) # parameter is the position returns
+# Access individual reports
+# print(final_state["market_report"])
+# print(final_state["sentiment_report"])
+# print(final_state["news_report"])
+# print(final_state["fundamentals_report"])
+# print(final_state["investment_plan"])
+# print(final_state["trader_investment_plan"])
+# print(final_state["final_trade_decision"])
+
+# ── Post-trade reflection (optional) ─────────────────────────────────────────
+# After observing actual P&L, feed it back to improve agent memory:
+# ta.reflect_and_remember(returns_losses=1000)
