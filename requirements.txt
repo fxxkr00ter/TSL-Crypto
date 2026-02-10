@@ -1,26 +1,46 @@
-typing-extensions
+# =============================================================================
+# TSL-Crypto Dependencies
+# =============================================================================
+
+# LLM & Agent Orchestration
 langchain-openai
+langchain-anthropic
+langchain-google-genai
 langchain-experimental
+langgraph
+
+# Data & Analysis
 pandas
 yfinance
-praw
-feedparser
+python-binance
 stockstats
-eodhd
-langgraph
+
+# Embeddings & Memory
 chromadb
-setuptools
-backtrader
-akshare
-tushare
-finnhub-python
-parsel
+
+# News & Social Data
+feedparser
+praw
 requests
-tqdm
-pytz
-redis
-chainlit
+parsel
+
+# CLI Interface
+typer
 rich
 questionary
-langchain_anthropic
-langchain-google-genai
+
+# Utilities
+python-dotenv
+typing-extensions
+setuptools
+pytz
+tqdm
+
+# Optional / Legacy data providers
+# akshare
+# tushare
+# finnhub-python
+# eodhd
+# backtrader
+# redis
+# chainlit
