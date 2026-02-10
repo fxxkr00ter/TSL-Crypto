@@ -12,10 +12,10 @@ ANALYST_ORDER = [
 
 
 def get_ticker() -> str:
-    """Prompt the user to enter a ticker symbol."""
+    """Prompt the user to enter a crypto symbol."""
     ticker = questionary.text(
-        "Enter the ticker symbol to analyze:",
-        validate=lambda x: len(x.strip()) > 0 or "Please enter a valid ticker symbol.",
+        "Enter the crypto symbol to analyze (e.g., BTCUSDT):",
+        validate=lambda x: len(x.strip()) > 0 or "Please enter a valid crypto symbol.",
         style=questionary.Style(
             [
                 ("text", "fg:green"),
@@ -127,6 +127,9 @@ def select_shallow_thinking_agent(provider) -> str:
 
     # Define shallow thinking llm engine options with their corresponding model names
     SHALLOW_AGENT_OPTIONS = {
+        "xai": [
+            ("Grok-4 Fast Non-Reasoning - Low latency", "grok-4-fast-non-reasoning"),
+        ],
         "openai": [
             ("GPT-4o-mini - Fast and efficient for quick tasks", "gpt-4o-mini"),
             ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
@@ -185,6 +188,9 @@ def select_deep_thinking_agent(provider) -> str:
 
     # Define deep thinking llm engine options with their corresponding model names
     DEEP_AGENT_OPTIONS = {
+        "xai": [
+            ("Grok-4 Fast Reasoning - Higher reasoning", "grok-4-fast-reasoning"),
+        ],
         "openai": [
             ("GPT-4.1-nano - Ultra-lightweight model for basic operations", "gpt-4.1-nano"),
             ("GPT-4.1-mini - Compact model with good performance", "gpt-4.1-mini"),
@@ -243,6 +249,7 @@ def select_llm_provider() -> tuple[str, str]:
     """Select the OpenAI api url using interactive selection."""
     # Define OpenAI api options with their corresponding endpoints
     BASE_URLS = [
+        ("xAI", "https://api.x.ai/v1"),
         ("OpenAI", "https://api.openai.com/v1"),
         ("Anthropic", "https://api.anthropic.com/"),
         ("Google", "https://generativelanguage.googleapis.com/v1"),
