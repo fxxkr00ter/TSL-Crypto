@@ -1,11 +1,43 @@
-.venv
-results
-env/
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables & secrets
+.env
+*.env
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
-*.csv
+Thumbs.db
+
+# Project-specific
+results/
+reports/*.md
 src/
 eval_results/
 eval_data/
-*.egg-info/
-.env
+*.csv
+tradingagents/dataflows/data_cache/
+uv.lock
